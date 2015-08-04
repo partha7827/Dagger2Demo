@@ -6,15 +6,21 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import javax.inject.Inject;
+
 
 public class MainActivity extends ActionBarActivity {
+    private ActivityComponent mActivityComponent;
+
+    @Inject UserModel userModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        UserModel user = new UserModel();
-        ((TextView) findViewById(R.id.user_desc_line)).setText(user.id + "\n" + user.name + "\n" + user.gender);
+        mActivityComponent = DaggerActivityComponent.builder().activityModule(new ActivityModule()).build();
+        mActivityComponent.inject(this);
+        ((TextView) findViewById(R.id.user_desc_line)).setText(userModel.id + "\n" + userModel.name + "\n" + userModel.gender);
     }
 
     @Override
