@@ -9,5 +9,6 @@ import dagger.Component;
  */
 @Component(modules = ActivityModule.class)
 public interface ActivityComponent {
-    void inject(MainActivity activity);
+//    void inject(MainActivity activity);
+    UserModel userModel();
 }

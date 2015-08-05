@@ -12,15 +12,22 @@ import javax.inject.Inject;
 public class MainActivity extends ActionBarActivity {
     private ActivityComponent mActivityComponent;
 
-    @Inject UserModel userModel;
+    @Inject
+    UserModel userModel;
+
+    @Inject
+    ShoppingCartModel cartModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mActivityComponent = DaggerActivityComponent.builder().activityModule(new ActivityModule()).build();
-        mActivityComponent.inject(this);
-        ((TextView) findViewById(R.id.user_desc_line)).setText(userModel.id + "\n" + userModel.name + "\n" + userModel.gender);
+        ContainerComponent containerComponent = DaggerContainerComponent.builder().activityComponent(mActivityComponent).containerModule(new ContainerModule()).build();
+
+        containerComponent.inject(this);
+
+        ((TextView) findViewById(R.id.user_desc_line)).setText(userModel.id + "\n" + userModel.name + "\n" + userModel.gender + "\n" + cartModel.total);
     }
 
     @Override
